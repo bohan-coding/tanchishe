@@ -1,1 +1,115 @@
-test html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深圳天气预报</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .weather-info {
+            margin-top: 20px;
+        }
+        .weather-info p {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+        .weather-info strong {
+            color: #555;
+        }
+        .loading, .error {
+            text-align: center;
+            font-size: 1.2em;
+            color: #777;
+            margin-top: 30px;
+        }
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            .weather-info p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>深圳实时天气</h1>
+        <div id="weather-data" class="weather-info">
+            <p class="loading">正在加载天气数据...</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchWeatherData();
+        });
+
+        async function fetchWeatherData() {
+            const weatherDisplay = document.getElementById('weather-data');
+            const apiKey = '5beb5c7cceae4bdebd99ae9a40ad7ad3'; // 请替换为你的和风天气API Key
+            const cityId = '101280601'; // 深圳的城市ID (和风天气)
+            // 注意：免费版和风天气API可能不支持直接获取“每日”天气，通常提供的是实时天气和未来几天的预报。
+            // 这里我们获取实时天气作为示例。如果需要每日历史数据，可能需要付费API或特定数据源。
+            const apiUrl = `https://devapi.qweather.com/v7/weather/now?location=${cityId}&key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                if (data.code === '200') {
+                    const weather = data.now;
+                    weatherDisplay.innerHTML = `
+                        <p><strong>城市：</strong>深圳</p>
+                        <p><strong>天气：</strong>${weather.text}</p>
+                        <p><strong>温度：</strong>${weather.temp}°C</p>
+                        <p><strong>体感温度：</strong>${weather.feelsLike}°C</p>
+                        <p><strong>风向：</strong>${weather.windDir}</p>
+                        <p><strong>风力：</strong>${weather.windScale}级</p>
+                        <p><strong>相对湿度：</strong>${weather.humidity}%</p>
+                        <p><strong>更新时间：</strong>${new Date(weather.obsTime).toLocaleString()}</p>
+                    `;
+                } else {
+                    weatherDisplay.innerHTML = `<p class="error">获取天气数据失败：${data.code} - ${data.message || '未知错误'}</p>`;
+                    console.error('API Error:', data);
+                }
+            } catch (error) {
+                weatherDisplay.innerHTML = `<p class="error">加载天气数据出错，请检查网络或API Key。 (${error.message})</p>`;
+                console.error('Fetch Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
