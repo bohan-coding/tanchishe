@@ -1,1 +1,41 @@
-
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>跨境卖家论坛</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">CB Seller Forum</div>
+    <nav>
+      <a href="#">首页</a>
+      <a href="#">版块</a>
+      <a href="#">发帖</a>
+      <a href="#">登录</a>
+    </nav>
+  </header>
+  <section class="hero">
+    <canvas id="bg-effect"></canvas>
+    <div class="hero-content">
+      <h1>跨境卖家论坛</h1>
+      <p>最酷的跨境电商交流社区</p>
+      <a href="#" class="cta-btn">立即加入</a>
+    </div>
+  </section>
+  <section class="topics">
+    <h2>热门版块</h2>
+    <div class="topic-list">
+      <div class="topic-card">亚马逊交流</div>
+      <div class="topic-card">独立站运营</div>
+      <div class="topic-card">物流与清关</div>
+      <div class="topic-card">广告推广</div>
+    </div>
+  </section>
+  <footer>
+    &copy; 2025 跨境卖家论坛 | 友情链接
+  </footer>
+  <script src="effect.js"></script>
+</body>
+</html>
